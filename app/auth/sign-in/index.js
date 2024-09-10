@@ -1,8 +1,10 @@
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
-import React, { useEffect } from 'react'
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, ToastAndroid } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { useNavigation, useRouter } from 'expo-router'
 import { Colors } from "@/constants/Colors"
 import { Ionicons } from '@expo/vector-icons'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from '../../../configs/firebaseconfig'
 
 
 const SignIn = () => {
@@ -13,12 +15,38 @@ const SignIn = () => {
             headerShown: false
         })
     }, [])
-    return (
-        <View style={{ padding: 25, paddingTop: 50,  backgroundColor: Colors.WHITE, height: "100%" }}>
-            <TouchableOpacity onPress={()=> router.back()}>
 
-          
-            <Ionicons name='arrow-back' size={24} color="black"></Ionicons>
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const OnSignInAccount = () => {
+
+        if (!email || !password) {
+            ToastAndroid.show("Plase enter all detail", ToastAndroid.BOTTOM)
+            return;
+        }
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                // Signed up 
+                const user = userCredential.user;
+                console.log(user)
+                
+
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(error)
+                if (errorCode == "auth/invalid-credential") {
+                    ToastAndroid.show("Invalid credentials", ToastAndroid.LONG)
+                }
+            });
+    }
+    return (
+        <View style={{ padding: 25, paddingTop: 50, backgroundColor: Colors.WHITE, height: "100%" }}>
+            <TouchableOpacity onPress={() => router.back()}>
+
+
+                <Ionicons name='arrow-back' size={24} color="black"></Ionicons>
             </TouchableOpacity>
             <Text style={{ fontFamily: "outfit-bold", fontSize: 30, marginTop: 30 }}>Let's Sign You In</Text>
             <Text style={{ fontFamily: "outfit", fontSize: 30, }}>Wellcom Back</Text>
@@ -27,7 +55,7 @@ const SignIn = () => {
                 marginTop: 50
             }}>
                 <Text style={{ fontFamily: "outfit" }}>Email</Text>
-                <TextInput style={styles.input} placeholder='Enter your Email.'>
+                <TextInput onChangeText={(value) => setEmail(value)} style={styles.input} placeholder='Enter your Email.'>
 
                 </TextInput>
             </View>
@@ -36,12 +64,12 @@ const SignIn = () => {
                 marginTop: 20
             }}>
                 <Text style={{ fontFamily: "outfit" }}>Password</Text>
-                <TextInput secureTextEntry={true} style={styles.input} placeholder='Enter your password.'>
+                <TextInput onChangeText={(value) => setPassword(value)} secureTextEntry={true} style={styles.input} placeholder='Enter your password.'>
 
                 </TextInput>
             </View>
 
-            <TouchableOpacity onPress={() => router.replace('')} style={{
+            <TouchableOpacity onPress={OnSignInAccount} style={{
                 padding: 15,
                 backgroundColor: Colors.PRIMARY,
                 borderRadius: 15,
@@ -59,7 +87,7 @@ const SignIn = () => {
                 </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => router.replace('auth/sign-up')} style={{
+            <TouchableOpacity onPress={() => router.replace('/auth/sign-up')} style={{
                 padding: 15,
                 backgroundColor: Colors.WHITE,
                 borderRadius: 15,
