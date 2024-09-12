@@ -26,11 +26,11 @@ const SelectTraveler = () => {
     });
   }, []);
 
+
+  const [selectedTraveler, setSelectedTraveler] = useState();
   useEffect(() => {
     setTripData({ ...tripData, traveler: selectedTraveler});
   }, [selectedTraveler]);
-
-  const [selectedTraveler, setSelectedTraveler] = useState();
 
   const onClickContinue = ()=>{
     
@@ -38,7 +38,7 @@ const SelectTraveler = () => {
       ToastAndroid.show("Select number traveler", ToastAndroid.LONG)
       return;
     }
-    router.push("/create-trip/select-budget");
+    router.push("/create-trip/select-dates");
    
 
   }

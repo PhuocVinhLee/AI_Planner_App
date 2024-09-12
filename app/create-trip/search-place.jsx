@@ -99,7 +99,7 @@ const SearchPlace = () => {
         <Button title="Tìm kiếm" onPress={searchLocation} />
       </View>
 
-      {tripData?.location?.name && showLocation && (
+      {tripData?.locationInfor?.name && showLocation && (
         
           <TouchableOpacity  onPress={() => {
             console.log("Pressed");
@@ -112,7 +112,7 @@ const SearchPlace = () => {
                   fontFamily: "outfit",
                 }}
               >
-                {tripData?.location?.name}
+                {tripData?.locationInfor?.name}
               </Text>
             </Text>
             {/* <Text style={styles.infoText}>

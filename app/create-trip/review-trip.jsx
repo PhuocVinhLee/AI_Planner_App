@@ -18,7 +18,13 @@ const ReviewTrip = () => {
       headerTransparent: true,
       headerTitle: "Your trip",
     });
+    console.log(tripData)
   }, []);
+
+  const onClickContinue = () => { 
+    router.push("/create-trip/generate-trip")
+
+  }
   return (
     <View style={styles.container}>
       <Text
@@ -75,7 +81,7 @@ const ReviewTrip = () => {
              
               }}
             >
-              {tripData?.locationInfor?.name} ABC
+              {tripData?.locationInfor?.name}
             </Text>
           </View>
         </View>
@@ -138,7 +144,7 @@ const ReviewTrip = () => {
                
               }}
             >
-              {tripData?.traveler?.title} Just me
+              {tripData?.traveler?.title}
             </Text>
           </View>
         </View>
@@ -168,7 +174,7 @@ const ReviewTrip = () => {
                 
               }}
             >
-              {tripData?.locationInfor?.name}Cheap
+              {tripData?.budget}
             </Text>
           </View>
         </View>
@@ -192,7 +198,7 @@ const ReviewTrip = () => {
             fontSize: 20,
           }}
         >
-          Countinue
+          Build My Trip.
         </Text>
       </TouchableOpacity>
     </View>
