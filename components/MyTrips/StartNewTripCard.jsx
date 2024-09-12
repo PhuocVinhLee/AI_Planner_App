@@ -34,7 +34,7 @@ const StartNewTripCard = () => {
 
       </Text>
 
-       <TouchableOpacity  onPress={()=> router.push("/create-trip/select-traveler")} style={{
+       <TouchableOpacity  onPress={()=> router.push("/create-trip/select-dates")} style={{
         padding: 15, backgroundColor: Colors.PRIMARY,
         borderRadius: 15,
         paddingHorizontal: 30
