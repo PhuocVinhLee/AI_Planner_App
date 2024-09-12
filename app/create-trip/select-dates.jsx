@@ -14,7 +14,7 @@ const SelectDates = () => {
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const { tripData, setTripData } = useContext(CreateTripContext);
-
+const router =useRouter()
   useEffect(() => {
     navigation.setOptions({
       headerShown: true,
@@ -45,6 +45,8 @@ const SelectDates = () => {
       endDate,
       totalNoOfDay: totalNoOfDay+ 1
     });
+    router.push("/create-trip/select-budget")
+
   };
   return (
     <View

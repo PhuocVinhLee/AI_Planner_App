@@ -28,3 +28,27 @@ export const SelectTravelsList = [
         people: " 3 to 5 people"
     }
 ]
+export const SelectBudgetOptions = [
+    {
+        id: 1,
+        title: "Cheap",
+        desc: "A solo traveles in Ex",
+        icon: "!",
+     
+    },
+    {
+        id: 2,
+        title: " Moderate",
+        desc: "A solo traveles in Ex",
+        icon: "!",
+        
+    },
+    {
+        id: 3,
+        title: "Luxury",
+        desc: "A solo traveles in Ex",
+        icon: "!",
+        
+    },
+   
+]
