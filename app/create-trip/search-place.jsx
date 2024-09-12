@@ -65,7 +65,7 @@ const SearchPlace = () => {
         longitudeDelta: 0.05,
       });
 
-      setTripData({
+      setTripData({locationInfor: {
         name: display_name,
         coordinatest: {
           lat: parseFloat(lat),
@@ -73,7 +73,7 @@ const SearchPlace = () => {
         },
         photo: "",
         url: "",
-      });
+      }});
       setShowLocation(true);
     }
   };
@@ -99,7 +99,7 @@ const SearchPlace = () => {
         <Button title="Tìm kiếm" onPress={searchLocation} />
       </View>
 
-      {tripData?.name && showLocation && (
+      {tripData?.location?.name && showLocation && (
         
           <TouchableOpacity  onPress={() => {
             console.log("Pressed");
@@ -112,7 +112,7 @@ const SearchPlace = () => {
                   fontFamily: "outfit",
                 }}
               >
-                {tripData?.name}
+                {tripData?.location?.name}
               </Text>
             </Text>
             {/* <Text style={styles.infoText}>

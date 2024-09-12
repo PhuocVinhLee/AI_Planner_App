@@ -6,16 +6,17 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { useNavigation } from "expo-router";
+import { useNavigation, useRouter } from "expo-router";
 import { Colors } from "@/constants/Colors";
 import { SelectTravelsList } from "@/constants/Options";
 import OptionCard from "../../components/CreateTrip/OptionsCard";
 import { CreateTripContext } from "../../context/CreateTripContext";
 import { useContext } from "react";
+import { ToastAndroid } from "react-native";
 
 const SelectTraveler = () => {
   const { tripData, setTripData } = useContext(CreateTripContext);
-
+  const router = useRouter()
   const navigation = useNavigation();
   useEffect(() => {
     navigation.setOptions({
@@ -30,6 +31,17 @@ const SelectTraveler = () => {
   }, [selectedTraveler]);
 
   const [selectedTraveler, setSelectedTraveler] = useState();
+
+  const onClickContinue = ()=>{
+    
+    if(!selectedTraveler){
+      ToastAndroid.show("Select number traveler", ToastAndroid.LONG)
+      return;
+    }
+    router.push("/create-trip/select-budget");
+   
+
+  }
   return (
     <View style={styles.container}>
       <Text
@@ -74,7 +86,7 @@ const SelectTraveler = () => {
         ></FlatList>
       </View>
 
-      <TouchableOpacity style={{
+      <TouchableOpacity  onPress={()=> onClickContinue()} style={{
         padding: 15,
         backgroundColor: Colors.PRIMARY,
         borderRadius: 15,
