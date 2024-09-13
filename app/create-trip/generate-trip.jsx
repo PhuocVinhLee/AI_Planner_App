@@ -27,9 +27,10 @@ const GenerateTrip = () => {
     console.log("sclaks", FINAL_PROMPT);
     setLoading(true);
      const result = await chatSession.sendMessage(FINAL_PROMPT);
-    console.log("ascnl",result.response.text());
+    console.log("ascnl",(tripData));
     setLoading(false);
     // router.push("(tabs)/mytrip")
+    
     const user = auth.currentUser;
     const docId = Date.now().toString();
    const  result_ =  await setDoc(doc(db, "UserTrips", docId), {
@@ -43,9 +44,9 @@ const GenerateTrip = () => {
     }
   };
 
-  // useEffect(() => {
-  //   tripData && generateAiTrip();
-  // }, []);
+  useEffect(() => {
+    tripData && generateAiTrip();
+  }, []);
   return (
     <View
       style={{

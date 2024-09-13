@@ -6,6 +6,7 @@ import {
   Button,
   TouchableOpacity,
   Pressable,
+  Image,
 } from "react-native";
 import React, { useContext, useEffect } from "react";
 import { Colors } from "@/constants/Colors";
@@ -48,7 +49,7 @@ const SearchPlace = () => {
     console.log("data", data);
 
     if (data.length > 0) {
-      const { lat, lon, display_name } = data[0];
+      const { lat, lon, display_name, name } = data[0];
       const locationDetails = {
         name: display_name,
         coordinates: {
@@ -65,15 +66,31 @@ const SearchPlace = () => {
         longitudeDelta: 0.05,
       });
 
-      setTripData({locationInfor: {
-        name: display_name,
-        coordinatest: {
-          lat: parseFloat(lat),
-          lng: parseFloat(lon),
+      // setTripData({
+      //   locationInfor: {
+      //     name: display_name,
+      //     coordinatest: {
+      //       lat: parseFloat(lat),
+      //       lng: parseFloat(lon),
+      //     },
+      //     photo: "",
+      //     url: "",
+      //   },
+      // });
+     const photo =  await fetchLocationPhotoFromUnsplash(name);
+     if(photo){
+      setTripData({
+        locationInfor: {
+          name: display_name,
+          coordinatest: {
+            lat: parseFloat(lat),
+            lng: parseFloat(lon),
+          },
+          photo: photo,
+          url: "",
         },
-        photo: "",
-        url: "",
-      }});
+      });
+     }
       setShowLocation(true);
     }
   };
@@ -81,6 +98,39 @@ const SearchPlace = () => {
     setQuery(text);
     setShowLocation(false);
   };
+
+  const fetchLocationPhotoFromUnsplash = async (placeName) => {
+   
+    const query = encodeURIComponent(`${placeName} " "`);
+
+    console.log("placename",query);
+  
+    try {
+      const response = await fetch(
+        `https://api.unsplash.com/search/photos?query=${query}&client_id=${'0byxaQN0pEUq2uyFDUeCdX3qiiY2Vs5R-yCCKH_jcdc'}&per_page=1`
+      );
+      const data = await response.json();
+      
+      if (data?.results && data?.results?.length > 0) {
+        const photo = data?.results[0];
+        const photoUrl = photo?.urls?.regular;
+       
+        console.log("Unsplash Photo URL:", photoUrl);
+        // Update your state or do something with the photo URL
+        return photoUrl;
+      } else {
+        console.log("No photos found.");
+        return null;
+      }
+    } catch (error) {
+      console.error("Error fetching photo from Unsplash:", error);
+      return null;
+    }
+  };
+  
+  // Example usage
+
+  
 
   return (
     <View style={styles.container}>
@@ -100,26 +150,31 @@ const SearchPlace = () => {
       </View>
 
       {tripData?.locationInfor?.name && showLocation && (
-        
-          <TouchableOpacity  onPress={() => {
+        <TouchableOpacity
+          onPress={() => {
             console.log("Pressed");
             router.push("/create-trip/select-traveler");
-          }} style={styles.infoContainer}>
-            <Text style={styles.infoText}>
-              Location name:{" "}
-              <Text
-                style={{
-                  fontFamily: "outfit",
-                }}
-              >
-                {tripData?.locationInfor?.name}
-              </Text>
+          }}
+          style={styles.infoContainer}
+        >
+          <Text style={styles.infoText}>
+            Location name:{" "}
+            <Text
+              style={{
+                fontFamily: "outfit",
+              }}
+            >
+              {tripData?.locationInfor?.name}
             </Text>
-            {/* <Text style={styles.infoText}>
-            Tọa độ: {tripData?.coordinates?.lat}, {tripData?.coordinates?.lng}
-          </Text> */}
-          </TouchableOpacity>
-       
+          </Text>
+          {tripData?.locationInfor?.photo && (
+            
+            <Image
+              source={{ uri: tripData?.locationInfor?.photo }}
+              style={styles.locationImage}
+            />
+          )}
+        </TouchableOpacity>
       )}
     </View>
   );
@@ -130,6 +185,12 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject, // Map sẽ chiếm toàn bộ màn hình
+  },
+  locationImage: {
+    width: "100%",
+    height: 200,
+    borderRadius: 8,
+    marginTop: 10,
   },
   searchContainer: {
     position: "absolute",
